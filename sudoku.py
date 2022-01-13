@@ -34,12 +34,42 @@ def printMatrix():
 # matrix 내 길이가 1인 리스트가 없게 해주는 함수. 매 ckeck 이후에 사용 필요. 
 def confirm():
     global matrix
+    storage = [[], [], []]      # 행, 열, 블록에서 있는 숫자 
     for i in range(9):
         for j in range(9):
             if type(matrix[i][j]) == list and len(matrix[i][j]) == 1:
                 matrix[i][j] = matrix[i][j][0]
+
+    for n in range(1, 10):  # 숫자 1부터 9까지 반복
+        for i in range(9):
+            for j in range(9):
+                if type(matrix[i][j]) == list:
+                    
     return
+
+
+# 행, 열, 블록에 유일한 가능한 숫자가 있으면 확정하는 함수
+def clear(arr, mode):
+    if mode == 'row':
+        for i in range(9):
+            exist = []
+            not_exist = []
+            poscell = []
+            for j in range(9):
+                if type(arr[i][j]) != list:
+                    exist.append(arr[i][j])
+                else:
+                    poscell.append([i, j])
+            not_exist = [i for i in range(1, 10) if i not in exist]
+            for j in poscell:
+                arr[j[0]][j[1]] = not_exist
+            
+    elif mode == 'col':
+        pass
+    else mode == 'block':
+        pass
     
+    return
 # 숫자를 대입하면 그 행, 그 열, 그 블록에 있는 겹치는 가능성만 제거하는 함수
 def pos_check(i, j):
     global matrix
@@ -191,44 +221,6 @@ else:
     # 정보 출력
     print('possibility cells num :', len(matrix_pos_index))
     print('possibilities :', possibilitiies)
-
-
-# 4.
-matrix_backup = copy.deepcopy(matrix) 
-while no_solution == 0 and solution == 0:                       ## 가정 반복문 ##
-
-    cnt = 0
-    fail = 0
-    i = 0
-    j = 0
-    cell = 0
-    while fail == 0 and i < 9 :    # i
-        while fail == 0 and j < 9:    # j
-            if type(matrix[i][j]) == list:                  # 가능성 칸 일때
-                cell += 1
-                if len(matrix[i][j]) == 1:                  # 길이 1인 경우 제외
-                    continue          
-                elif len(matrix[i][j]) == 0:                # 길이 0인 경우 -> 들어갈 수 있는 숫자가 없음 -> 실패로 간주
-                    fail = 1
-                    cell -= 1
-                    matrix_pos_index[cell] = 0
-                    if cell != 0:
-                        matrix_pos_index[cell - 1] += 1
-                    else:
-                        no_solution = 1
-                    break
-                else:                                       # 나머지 경우 -> 가능성 확정
-                    matrix[i][j] = matrix[i][j][matrix_pos_index[cell]]
-
-
-            j += 1
-        i += 1
-    if fail == 1:       # 실패했을 경우
-        continue
-    else:
-        sudoku = copy.deepcopy(matrix)
-        solution = 1
-        break
 
 
 # 일반출력
