@@ -11,6 +11,27 @@ def printMap(arr):
                 print('%11d' % arr[i][j], end = ' ')
         print()
 
+# 입력에 알맞은 모양으로 9*9 이차원 배열을 출력하는 함수
+def justPrint(arr):
+    for i in range(9):
+        for j in range(9):
+            print(arr[i][j], end = '')
+        print()
+    return
+
+# 보기 쉽도록 한 블록씩 떼서 출력하는 함수
+def easyPrint(arr):
+    for i in range(9):
+        if i % 3 == 0 and i != 0:
+            print()
+        for j in range(9):
+            if j % 3 == 0 and j != 0:
+                print(' ', end = '  ')
+            print(arr[i][j], end = '')
+        
+        print()
+    return
+
 # 빈 칸 혹은 리스트인 칸의 가능한 숫자들을 채워 주고, 바꾼 칸들의 개수를 반환하는 함수
 def check_possibilities(arr):
     cnt = 0
@@ -126,3 +147,5 @@ while True:
         break
 
 printMap(sudoku)
+justPrint(sudoku)
+easyPrint(sudoku)
