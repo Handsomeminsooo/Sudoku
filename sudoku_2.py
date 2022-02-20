@@ -149,3 +149,20 @@ while True:
 printMap(sudoku)
 justPrint(sudoku)
 easyPrint(sudoku)
+
+def backtracking(arr, i, j, index, pos):
+    # 확정된 칸까지 안내하는 코드
+    if type(arr[i][j]) != list:
+        while type(arr[i][j]) != list:
+            j+= 1
+            if j == 9:
+                j = 0
+                i += 1
+            if i == 9:
+                print('error 1')
+                return
+        return backtracking(arr, i, j, index, arr[i][j])
+    pass
+    
+    
+        
