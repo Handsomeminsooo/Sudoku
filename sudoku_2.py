@@ -1,31 +1,31 @@
 import sys, copy
 
-# 9*9 이차원 배열을 출력해주는 함수
+# 16*16 이차원 배열을 출력해주는 함수
 def printMap(arr):
-    for i in range(9):
-        for j in range(9):
+    for i in range(16):
+        for j in range(16):
             if type(arr[i][j]) == list:
                 temp = list(map(str, arr[i][j]))
-                print('[%9s]' % ''.join(temp), end = ' ')
+                print('[%16s]' % ''.join(temp), end = ' ')
             else:
                 print('%11d' % arr[i][j], end = ' ')
         print()
 
-# 입력에 알맞은 모양으로 9*9 이차원 배열을 출력하는 함수
+# 입력에 알맞은 모양으로 16*16 이차원 배열을 출력하는 함수
 def justPrint(arr):
-    for i in range(9):
-        for j in range(9):
+    for i in range(16):
+        for j in range(16):
             print(arr[i][j], end = '')
         print()
     return
 
 # 보기 쉽도록 한 블록씩 떼서 출력하는 함수
 def easyPrint(arr):
-    for i in range(9):
-        if i % 3 == 0 and i != 0:
+    for i in range(16):
+        if i % 4 == 0 and i != 0:
             print()
-        for j in range(9):
-            if j % 3 == 0 and j != 0:
+        for j in range(16):
+            if j % 4 == 0 and j != 0:
                 print(' ', end = '  ')
             print(arr[i][j], end = '')
         
@@ -35,11 +35,11 @@ def easyPrint(arr):
 # 빈 칸 혹은 리스트인 칸의 가능한 숫자들을 채워 주고, 바꾼 칸들의 개수를 반환하는 함수
 def check_possibilities(arr):
     cnt = 0
-    for i in range(9):
-        for j in range(9):
+    for i in range(16):
+        for j in range(16):
             if type(arr[i][j]) == list or arr[i][j] == 0:
                 pos = [k for k in range(1, 10)]
-                for l in range(9):
+                for l in range(16):
                     if arr[l][j] in pos:        # arr[l][j] 가 arr[i][j]을 포함해도 리스트라 pos안에 없음.
                         #print(pos, end = ' ')
                         pos.remove(arr[l][j])
@@ -48,9 +48,9 @@ def check_possibilities(arr):
                         #print(pos, end = ' ')
                         pos.remove(arr[i][l])
                         #print('>', pos, 'col')
-                    if arr[i//3 * 3 + l // 3][j//3 * 3 + l % 3] in pos:
+                    if arr[i//4 * 4 + l // 4][j//4 * 4 + l % 4] in pos:
                         #print(pos, end = ' ')
-                        pos.remove(arr[i//3 * 3 + l // 3][j//3 * 3 + l % 3])    # MISTAKE : 3으로 정수 나눗셈 후 다시 3 곱해 줘야함.
+                        pos.remove(arr[i//4 * 4 + l // 4][j//4 * 4 + l % 4])    # MISTAKE : 3으로 정수 나눗셈 후 다시 3 곱해 줘야함.
                         #print('>', pos, 'block')
                 if arr[i][j] != pos or arr[i][j] == 0:
                     arr[i][j] = copy.deepcopy(pos)
@@ -60,8 +60,8 @@ def check_possibilities(arr):
 
 # 행, 열, 블럭 내에서 가능한 어떤 숫자가 한 칸에만 존재할때 그 수를 확정해주는 함수
 def check_onlyones(arr):
-    for i in range(9):
-        for j in range(9):
+    for i in range(16):
+        for j in range(16):
             if type(arr[i][j]) == list:     # 리스트 일때만 확인
                 #print()
                 #print('check', i, j, arr[i][j])
@@ -75,7 +75,7 @@ def check_onlyones(arr):
                 # 행
                 others = []
                 only = []
-                for l in range(9):
+                for l in range(16):
                     if type(arr[l][j]) == list and l != i:
                         others += arr[l][j]
                 only = [l for l in arr[i][j] if l not in others]
@@ -94,7 +94,7 @@ def check_onlyones(arr):
                 # 열
                 others = []
                 only = []
-                for l in range(9):
+                for l in range(16):
                     if type(arr[i][l]) == list and l != j:
                         others += arr[i][l]
                 only = [l for l in arr[i][j] if l not in others]
@@ -114,10 +114,10 @@ def check_onlyones(arr):
                 # 블럭
                 others = []
                 only = []
-                for l in range(3):
-                    for k in range(3):
-                        if type(arr[i//3 * 3 + l][j//3 * 3 + k]) == list and not (i//3 * 3 + l == i and j//3 * 3 + k == j): # i//3 + l != i and j//3 + k != j 일때는 i, j 중 하나만 같아도 건너뜀.
-                            others += arr[i//3 * 3+ l][j//3 * 3 + k]
+                for l in range(4):
+                    for k in range(4):
+                        if type(arr[i//4 * 4 + l][j//4 * 4 + k]) == list and not (i//4 * 4 + l == i and j//4 * 4 + k == j): # i//4 + l != i and j//4 + k != j 일때는 i, j 중 하나만 같아도 건너뜀.
+                            others += arr[i//4 * 4+ l][j//4 * 4 + k]
                 only = [l for l in arr[i][j] if l not in others]
                 
                 if len(only) > 1:
@@ -136,7 +136,7 @@ def check_onlyones(arr):
 
 # 스도쿠 입력부
 sudoku = []
-for i in range(9):
+for i in range(16):
     sudoku.append(list(map(int, sys.stdin.readline().strip('\n'))))
 
 while True:
